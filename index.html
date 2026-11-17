@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Démo page restaurant · Le Comptoir de Léon</title>
+<meta name="description" content="Démo de page web pour restaurant : carte, horaires, avis et réservation en un seul endroit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6efe4; --paper:#fbf7f0; --ink:#241a14; --muted:#6f6154;
+  --wine:#6d1f2b; --wine-d:#4e1520; --gold:#b98a3e; --line:#e3d6c1;
+  --serif:'Fraunces',Georgia,serif; --sans:'Hanken Grotesk',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+img,svg{max-width:100%;display:block}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+.eyebrow{font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600}
+h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.1}
+h2{font-size:clamp(1.9rem,4.6vw,2.9rem);margin:.5rem 0 1rem}
+section{padding:84px 0}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:14px 26px;border-radius:999px;font-weight:600;font-size:.95rem;text-decoration:none;border:1.5px solid transparent;transition:.25s;cursor:pointer;font-family:var(--sans)}
+.btn-wine{background:var(--wine);color:#fff}.btn-wine:hover{background:var(--wine-d);transform:translateY(-2px)}
+.btn-ghost{border-color:rgba(255,255,255,.55);color:#fff}.btn-ghost:hover{background:#fff;color:var(--ink)}
+.btn-line{border-color:var(--ink);color:var(--ink)}.btn-line:hover{background:var(--ink);color:#fff}
+
+/* NAV */
+nav{position:fixed;inset:0 0 auto 0;z-index:50;transition:.3s}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:70px}
+nav.solid{background:rgba(246,239,228,.94);backdrop-filter:blur(8px);box-shadow:0 1px 0 var(--line)}
+.logo{font-family:var(--serif);font-size:1.25rem;font-weight:600;text-decoration:none;color:#fff;transition:.3s}
+nav.solid .logo{color:var(--ink)}
+.menu{display:flex;gap:28px;align-items:center}
+.menu a{font-size:.9rem;text-decoration:none;color:#fff;opacity:.92;transition:.3s}
+nav.solid .menu a{color:var(--ink)}
+.menu a:hover{opacity:1;color:var(--gold)}
+.menu .btn{padding:10px 20px;font-size:.85rem;color:#fff!important}
+.burger{display:none;background:none;border:0;width:40px;height:40px;cursor:pointer}
+.burger span{display:block;width:24px;height:2px;background:#fff;margin:6px auto;transition:.3s}
+nav.solid .burger span{background:var(--ink)}
+@media(max-width:820px){
+  .burger{display:block}
+  .menu{position:fixed;inset:70px 0 auto 0;background:var(--paper);flex-direction:column;padding:24px 0 32px;gap:20px;transform:translateY(-130%);transition:.35s;box-shadow:0 20px 40px rgba(0,0,0,.12)}
+  .menu.open{transform:none}
+  .menu a{color:var(--ink)}
+}
+
+/* HERO */
+.hero{min-height:100svh;display:flex;align-items:flex-end;color:#fff;position:relative;overflow:hidden;
+  background:
+   radial-gradient(1200px 600px at 80% 10%,rgba(185,138,62,.35),transparent 60%),
+   radial-gradient(900px 600px at 10% 90%,rgba(109,31,43,.9),transparent 65%),
+   linear-gradient(160deg,#2a1710,#3b1a1a 55%,#1f120d)}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);background-size:22px 22px;opacity:.5}
+.hero .wrap{position:relative;padding-bottom:90px;padding-top:140px}
+.hero h1{font-size:clamp(2.7rem,8.5vw,6rem);max-width:12ch;letter-spacing:-.02em}
+.hero h1 em{color:var(--gold);font-weight:400}
+.hero p{max-width:46ch;margin:22px 0 32px;font-size:1.1rem;opacity:.9}
+.hero .cta{display:flex;gap:14px;flex-wrap:wrap}
+.hero-badge{position:absolute;right:22px;bottom:34px;font-size:.78rem;opacity:.75;text-align:right;line-height:1.5}
+.open-now{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);backdrop-filter:blur(6px);padding:8px 16px;border-radius:999px;font-size:.84rem;margin-bottom:26px}
+.dot{width:8px;height:8px;border-radius:50%;background:#6fd08c;box-shadow:0 0 0 4px rgba(111,208,140,.25)}
+.dot.off{background:#e08a7a;box-shadow:0 0 0 4px rgba(224,138,122,.25)}
+
+/* HISTOIRE */
+.story{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.story p{color:var(--muted);margin-bottom:1rem;font-size:1.04rem}
+.story .sign{font-family:var(--serif);font-style:italic;font-size:1.3rem;color:var(--wine);margin-top:8px}
+.plate{aspect-ratio:4/5;border-radius:200px 200px 24px 24px;background:
+   radial-gradient(circle at 50% 38%,#f3e6cf 0 26%,transparent 27%),
+   radial-gradient(circle at 50% 38%,#d9bf8f 0 31%,transparent 32%),
+   linear-gradient(180deg,#7a2a35,#4e1520);position:relative;box-shadow:0 30px 60px -30px rgba(78,21,32,.6)}
+.plate::after{content:"Votre photo ici";position:absolute;bottom:22px;left:0;right:0;text-align:center;color:rgba(255,255,255,.7);font-size:.8rem;letter-spacing:.14em;text-transform:uppercase}
+.stats{display:flex;gap:34px;margin-top:30px;flex-wrap:wrap}
+.stats b{font-family:var(--serif);font-size:2.1rem;color:var(--wine);display:block;line-height:1}
+.stats span{font-size:.84rem;color:var(--muted)}
+@media(max-width:820px){.story{grid-template-columns:1fr;gap:36px}.plate{max-width:320px;margin:0 auto}}
+
+/* CARTE */
+.carte{background:var(--paper);border-block:1px solid var(--line)}
+.head-c{text-align:center;max-width:620px;margin:0 auto 38px}
+.head-c p{color:var(--muted)}
+.tabs{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:38px}
+.tab{background:none;border:1.5px solid var(--line);padding:10px 22px;border-radius:999px;font:600 .9rem var(--sans);color:var(--muted);cursor:pointer;transition:.25s}
+.tab:hover{border-color:var(--wine);color:var(--wine)}
+.tab.on{background:var(--wine);border-color:var(--wine);color:#fff}
+.panel{display:none;max-width:780px;margin:0 auto;animation:fade .4s}
+.panel.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.item{display:grid;grid-template-columns:1fr auto;gap:4px 18px;padding:20px 0;border-bottom:1px dashed var(--line)}
+.item h3{font-size:1.2rem}
+.item .price{font-family:var(--serif);font-size:1.15rem;color:var(--wine);font-weight:600}
+.item p{grid-column:1;color:var(--muted);font-size:.93rem}
+.tag{display:inline-block;font:600 .66rem var(--sans);letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:6px;background:#efe3cc;color:#7a5a1f;margin-left:8px;vertical-align:middle}
+.formule{margin:34px auto 0;max-width:780px;background:var(--wine);color:#fff;border-radius:20px;padding:28px 32px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.formule h3{font-size:1.5rem}.formule p{opacity:.85;font-size:.95rem}
+.formule .big{font-family:var(--serif);font-size:2.4rem;color:var(--gold)}
+.note{text-align:center;margin-top:22px;font-size:.82rem;color:var(--muted)}
+
+/* AMBIANCE */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{border-radius:18px;padding:30px 26px;min-height:240px;display:flex;flex-direction:column;justify-content:flex-end;color:#fff;position:relative;overflow:hidden;transition:.3s}
+.card:hover{transform:translateY(-6px)}
+.card h3{font-size:1.4rem;margin-bottom:6px}.card p{font-size:.92rem;opacity:.88}
+.card .ic{position:absolute;top:22px;left:26px;font-size:1.9rem}
+.c1{background:linear-gradient(160deg,#8a3b2c,#4e1520)}
+.c2{background:linear-gradient(160deg,#3d5a4a,#1f3328)}
+.c3{background:linear-gradient(160deg,#b98a3e,#6b4a14)}
+@media(max-width:820px){.grid3{grid-template-columns:1fr}.card{min-height:190px}}
+
+/* AVIS */
+.avis{background:#2a1710;color:#fff}
+.avis h2{color:#fff}
+.score{display:flex;align-items:center;gap:14px;margin-bottom:34px}
+.score b{font-family:var(--serif);font-size:3.2rem;color:var(--gold);line-height:1}
+.stars{color:var(--gold);letter-spacing:3px}
+.score small{opacity:.7;display:block}
+.rev{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.rev blockquote{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:26px}
+.rev p{font-family:var(--serif);font-style:italic;font-size:1.08rem;margin:10px 0 16px}
+.rev cite{font-style:normal;font-size:.84rem;opacity:.7}
+@media(max-width:820px){.rev{grid-template-columns:1fr}}
+
+/* INFOS */
+.infos{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+.hours li{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);list-style:none;font-size:.98rem}
+.hours li span:last-child{color:var(--muted)}
+.hours li.today{font-weight:600;color:var(--wine)}.hours li.today span:last-child{color:var(--wine)}
+.coord p{margin-bottom:14px;color:var(--muted)}
+.coord b{color:var(--ink);display:block;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:2px}
+.map{margin-top:20px;height:170px;border-radius:18px;background:
+   linear-gradient(90deg,transparent 49%,#d9ccb4 49% 51%,transparent 51%),
+   linear-gradient(0deg,transparent 49%,#d9ccb4 49% 51%,transparent 51%),#ece2cf;
+   background-size:90px 90px,90px 90px,auto;display:grid;place-items:center;position:relative}
+.map::after{content:"";width:20px;height:20px;background:var(--wine);border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 0 0 8px rgba(109,31,43,.18)}
+@media(max-width:820px){.infos{grid-template-columns:1fr;gap:40px}}
+
+/* RESA */
+.resa{background:var(--wine);color:#fff;text-align:center}
+.resa h2{color:#fff}
+.resa p{opacity:.85;max-width:50ch;margin:0 auto 28px}
+form{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:820px;margin:0 auto 18px;text-align:left}
+form label{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;opacity:.8;display:block;margin-bottom:6px}
+form input,form select{width:100%;padding:14px;border-radius:12px;border:0;font:500 1rem var(--sans);background:#fff;color:var(--ink)}
+form .full{grid-column:1/-1;display:flex;justify-content:center;margin-top:8px}
+form button{background:var(--gold);color:#1d1208;border:0;padding:16px 38px;border-radius:999px;font:600 1rem var(--sans);cursor:pointer;transition:.25s}
+form button:hover{background:#d4a24c;transform:translateY(-2px)}
+.ok{display:none;background:rgba(255,255,255,.14);padding:16px;border-radius:14px;max-width:560px;margin:10px auto 0}
+@media(max-width:700px){form{grid-template-columns:1fr 1fr}}
+
+footer{background:#1d1208;color:rgba(255,255,255,.65);padding:40px 0;font-size:.86rem}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.demo{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);background:#1d1208;color:#fff;font-size:.78rem;padding:9px 18px;border-radius:999px;z-index:60;opacity:.92;white-space:nowrap}
+.reveal{opacity:0;transform:translateY(24px);transition:.8s}
+.reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="wrap">
+    <a href="#top" class="logo">Le Comptoir de Léon</a>
+    <button class="burger" aria-label="Menu" onclick="document.getElementById('menu').classList.toggle('open')"><span></span><span></span></button>
+    <div class="menu" id="menu">
+      <a href="#histoire">Notre histoire</a>
+      <a href="#carte">La carte</a>
+      <a href="#avis">Avis</a>
+      <a href="#infos">Infos</a>
+      <a href="#resa" class="btn btn-wine">Réserver</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="open-now"><span class="dot" id="dot"></span><span id="state">Ouvert ce soir dès 19h</span></div>
+    <h1>La cuisine de bistrot, <em>comme avant.</em></h1>
+    <p>Produits de saison, fournisseurs locaux et plats mijotés maison. Une table chaleureuse au cœur de la ville, midi et soir.</p>
+    <div class="cta">
+      <a href="#resa" class="btn btn-wine">Réserver une table</a>
+      <a href="#carte" class="btn btn-ghost">Voir la carte</a>
+    </div>
+  </div>
+  <div class="hero-badge">Cuisine 100 % maison<br>Produits frais de saison</div>
+</header>
+
+<section id="histoire">
+  <div class="wrap story">
+    <div class="reveal">
+      <span class="eyebrow">Notre histoire</span>
+      <h2>Une table de quartier, depuis 2009.</h2>
+      <p>Léon a ouvert le Comptoir avec une idée simple : cuisiner ce qu'il aime manger, avec des produits qu'il connaît. Le boucher est à deux rues, le maraîcher livre le jeudi, les desserts sont faits chaque matin.</p>
+      <p>Ici, pas de carte interminable : une dizaine de plats qui changent avec les saisons, une ardoise du jour, et une cave choisie auprès de petits vignerons.</p>
+      <div class="sign">— Léon & toute l'équipe</div>
+      <div class="stats">
+        <div><b>15 ans</b><span>de cuisine maison</span></div>
+        <div><b>90%</b><span>de produits locaux</span></div>
+        <div><b>4,8/5</b><span>sur 320 avis</span></div>
+      </div>
+    </div>
+    <div class="plate reveal"></div>
+  </div>
+</section>
+
+<section class="carte" id="carte">
+  <div class="wrap">
+    <div class="head-c reveal">
+      <span class="eyebrow">La carte</span>
+      <h2>Ce qu'on cuisine en ce moment</h2>
+      <p>La carte évolue avec les saisons. Dites-nous vos allergies, on s'adapte.</p>
+    </div>
+    <div class="tabs" role="tablist">
+      <button class="tab on" data-t="entrees">Entrées</button>
+      <button class="tab" data-t="plats">Plats</button>
+      <button class="tab" data-t="desserts">Desserts</button>
+      <button class="tab" data-t="vins">Vins</button>
+    </div>
+
+    <div class="panel on" id="entrees">
+      <div class="item"><h3>Velouté de potimarron <span class="tag">Végétarien</span></h3><span class="price">9 €</span><p>Châtaignes grillées, crème fouettée à la noisette.</p></div>
+      <div class="item"><h3>Œuf parfait, crème de cèpes</h3><span class="price">11 €</span><p>Mouillettes de pain de campagne, éclats de noisettes.</p></div>
+      <div class="item"><h3>Terrine de campagne maison</h3><span class="price">10 €</span><p>Cornichons, chutney de figues, toast de pain grillé.</p></div>
+      <div class="item"><h3>Salade de chèvre chaud <span class="tag">Végétarien</span></h3><span class="price">12 €</span><p>Miel du producteur, noix, jeunes pousses, vinaigrette moutardée.</p></div>
+    </div>
+
+    <div class="panel" id="plats">
+      <div class="item"><h3>Bœuf bourguignon <span class="tag">Signature</span></h3><span class="price">23 €</span><p>Mijoté 6 heures, purée maison, carottes glacées.</p></div>
+      <div class="item"><h3>Magret de canard, sauce au miel</h3><span class="price">24 €</span><p>Gratin dauphinois, poêlée de légumes de saison.</p></div>
+      <div class="item"><h3>Pavé de cabillaud rôti</h3><span class="price">22 €</span><p>Beurre blanc citronné, écrasé de pommes de terre, haricots verts.</p></div>
+      <div class="item"><h3>Risotto aux champignons <span class="tag">Végétarien</span></h3><span class="price">19 €</span><p>Cèpes, parmesan 24 mois, huile de truffe.</p></div>
+      <div class="item"><h3>Burger du Comptoir</h3><span class="price">18 €</span><p>Bœuf du boucher, cheddar affiné, oignons confits, frites maison.</p></div>
+    </div>
+
+    <div class="panel" id="desserts">
+      <div class="item"><h3>Crème brûlée à la vanille</h3><span class="price">8 €</span><p>Vanille de Madagascar, caramel craquant.</p></div>
+      <div class="item"><h3>Moelleux au chocolat <span class="tag">Signature</span></h3><span class="price">9 €</span><p>Cœur coulant, glace vanille, éclats de fève de cacao.</p></div>
+      <div class="item"><h3>Tarte Tatin tiède</h3><span class="price">9 €</span><p>Pommes de saison, crème fraîche épaisse.</p></div>
+      <div class="item"><h3>Café gourmand</h3><span class="price">10 €</span><p>Expresso et trois mignardises maison.</p></div>
+    </div>
+
+    <div class="panel" id="vins">
+      <div class="item"><h3>Vin rouge de la maison</h3><span class="price">5 € / verre</span><p>Sélection de notre vigneron partenaire, 20 € la bouteille.</p></div>
+      <div class="item"><h3>Vin blanc sec</h3><span class="price">5 € / verre</span><p>Frais et fruité, parfait avec les poissons. 20 € la bouteille.</p></div>
+      <div class="item"><h3>Rosé de saison</h3><span class="price">5 € / verre</span><p>Léger et vif. 20 € la bouteille.</p></div>
+      <div class="item"><h3>Bière artisanale locale</h3><span class="price">6 €</span><p>Blonde ou ambrée, brassée à 12 km d'ici.</p></div>
+    </div>
+
+    <div class="formule reveal">
+      <div><h3>La formule du midi</h3><p>Du lundi au vendredi · Entrée + plat ou plat + dessert</p></div>
+      <div class="big">19 €</div>
+    </div>
+    <p class="note">Exemple de carte : prix et plats modifiables à tout moment par vos soins.</p>
+  </div>
+</section>
+
+<section id="ambiance">
+  <div class="wrap">
+    <div class="head-c reveal">
+      <span class="eyebrow">Pourquoi venir</span>
+      <h2>Bien manger, sans se compliquer</h2>
+    </div>
+    <div class="grid3">
+      <div class="card c1 reveal"><span class="ic">🍷</span><h3>Une cave choisie</h3><p>Des petits vignerons, des bouteilles à prix doux et des conseils pour accorder vos plats.</p></div>
+      <div class="card c2 reveal"><span class="ic">🌿</span><h3>Des produits locaux</h3><p>Maraîcher, boucher et fromager à moins de 30 km. La carte suit les saisons.</p></div>
+      <div class="card c3 reveal"><span class="ic">🕯️</span><h3>Une salle chaleureuse</h3><p>Pour un dîner à deux, un repas de famille ou un événement jusqu'à 30 personnes.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="avis" id="avis">
+  <div class="wrap">
+    <span class="eyebrow">Ils en parlent</span>
+    <h2>Ce que disent nos clients</h2>
+    <div class="score"><b>4,8</b><div><div class="stars">★★★★★</div><small>Basé sur 320 avis Google</small></div></div>
+    <div class="rev">
+      <blockquote class="reveal"><div class="stars">★★★★★</div><p>Le meilleur bourguignon que j'aie mangé depuis longtemps. Service adorable, on se sent chez soi.</p><cite>Camille R.</cite></blockquote>
+      <blockquote class="reveal"><div class="stars">★★★★★</div><p>Formule du midi imbattable. Produits frais, desserts faits maison, on y retourne chaque semaine.</p><cite>Julien M.</cite></blockquote>
+      <blockquote class="reveal"><div class="stars">★★★★★</div><p>Anniversaire de ma mère organisé ici : accueil parfait, équipe aux petits soins. Merci !</p><cite>Sophie L.</cite></blockquote>
+    </div>
+  </div>
+</section>
+
+<section id="infos">
+  <div class="wrap infos">
+    <div class="reveal">
+      <span class="eyebrow">Horaires</span>
+      <h2>Quand nous trouver</h2>
+      <ul class="hours" id="hours">
+        <li data-d="1"><span>Lundi</span><span>12h – 14h</span></li>
+        <li data-d="2"><span>Mardi</span><span>12h – 14h · 19h – 22h</span></li>
+        <li data-d="3"><span>Mercredi</span><span>12h – 14h · 19h – 22h</span></li>
+        <li data-d="4"><span>Jeudi</span><span>12h – 14h · 19h – 22h</span></li>
+        <li data-d="5"><span>Vendredi</span><span>12h – 14h · 19h – 22h30</span></li>
+        <li data-d="6"><span>Samedi</span><span>19h – 22h30</span></li>
+        <li data-d="0"><span>Dimanche</span><span>Fermé</span></li>
+      </ul>
+    </div>
+    <div class="coord reveal">
+      <span class="eyebrow">Adresse & contact</span>
+      <h2>Venez nous voir</h2>
+      <p><b>Adresse</b>12 rue des Halles, 00000 Votre Ville</p>
+      <p><b>Téléphone</b><a href="tel:+33000000000">00 00 00 00 00</a></p>
+      <p><b>Email</b><a href="mailto:contact@exemple.fr">contact@exemple.fr</a></p>
+      <p><b>Accès</b>Parking à 2 minutes · Accessible PMR</p>
+      <div class="map"></div>
+    </div>
+  </div>
+</section>
+
+<section class="resa" id="resa">
+  <div class="wrap">
+    <span class="eyebrow">Réservation</span>
+    <h2>Réservez votre table</h2>
+    <p>Quelques secondes suffisent. Nous vous confirmons rapidement par téléphone ou par message.</p>
+    <form id="form">
+      <div><label for="d">Date</label><input type="date" id="d" required></div>
+      <div><label for="h">Heure</label><select id="h"><option>12h00</option><option>12h30</option><option>13h00</option><option>19h00</option><option selected>19h30</option><option>20h00</option><option>20h30</option><option>21h00</option></select></div>
+      <div><label for="n">Couverts</label><select id="n"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7+</option></select></div>
+      <div><label for="t">Téléphone</label><input type="tel" id="t" placeholder="06 00 00 00 00" required></div>
+      <div class="full"><button type="submit">Demander une réservation</button></div>
+    </form>
+    <div class="ok" id="ok">Merci ! Ceci est une démo : sur votre vrai site, la demande arrive directement par message ou email.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© Le Comptoir de Léon · Cuisine de bistrot</span>
+    <span>Page de démonstration · Mentions légales</span>
+  </div>
+</footer>
+
+<div class="demo">Démo · tout est modifiable : textes, carte, photos, couleurs</div>
+
+<script>
+// nav
+const nav=document.getElementById('nav');
+const onScroll=()=>nav.classList.toggle('solid',scrollY>40);
+onScroll();addEventListener('scroll',onScroll,{passive:true});
+document.querySelectorAll('#menu a').forEach(a=>a.addEventListener('click',()=>document.getElementById('menu').classList.remove('open')));
+// tabs
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');document.getElementById(b.dataset.t).classList.add('on');
+}));
+// reveal
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+// horaires + ouvert maintenant
+const sched={0:[],1:[[12,14]],2:[[12,14],[19,22]],3:[[12,14],[19,22]],4:[[12,14],[19,22]],5:[[12,14],[19,22.5]],6:[[19,22.5]]};
+const now=new Date(),day=now.getDay(),hr=now.getHours()+now.getMinutes()/60;
+document.querySelector('#hours li[data-d="'+day+'"]').classList.add('today');
+const open=(sched[day]||[]).some(([a,b])=>hr>=a&&hr<b);
+const dot=document.getElementById('dot'),st=document.getElementById('state');
+if(open){st.textContent='Ouvert maintenant'}else{dot.classList.add('off');st.textContent='Fermé pour le moment · Réservez pour plus tard'}
+// resa
+const d=document.getElementById('d');d.min=new Date().toISOString().split('T')[0];
+document.getElementById('form').addEventListener('submit',e=>{e.preventDefault();document.getElementById('ok').style.display='block'});
+</script>
+</body>
+</html>
